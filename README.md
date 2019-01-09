@@ -1,6 +1,18 @@
 # sendfile
 A cross-platform pure python program to send and receive file over local area network(LAN) with on-the-fly gzip streaming
 
+### How to use
+```
+python send.py <files...>
+python send.py <-p|--pin> <files...>
+python send.py <-up|--userpin> <user PIN> <files...>
+```
+```
+python recv.py
+python recv.py <n|new|g|gen>
+python recv.py <user PIN>
+```
+
 ### How to use with usecases
 1. General usecase : send two files without PIN. The First non-PIN receiver on network takes the file
 - Sender
@@ -123,4 +135,5 @@ $ _
 
 ### Security note
 The receiver takes any gzip tar stream from port number 18902.
-Becuase this stream is not encrypted, it can be captured with network tools or can be targeted for hacking easily.
+Becuase this stream is not encrypted, it can be captured with network tools or can be easily targeted for hacking.
+**Any response from security issues are not taken by developer.**
