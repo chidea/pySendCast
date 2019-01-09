@@ -130,8 +130,8 @@ $ _
 > In this case, receiver **can** be running before the sender sends
 
 ### special usecase
-- send/recv from android
-  using [Termux](https://play.google.com/store/apps/details?id=com.termux&hl=en)
+- send/recv from Android
+  - using [Termux](https://play.google.com/store/apps/details?id=com.termux&hl=en)
 
 ### Security note
 The receiver takes any gzip tar stream from port number 18902.
