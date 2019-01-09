@@ -1,5 +1,5 @@
 # sendfile
-A pure Python cross-platform program to send and receive file over local area network(LAN) with on-the-fly gzip streaming
+A pure Python cross-platform program to send and receive files over local area network(LAN) with on-the-fly gzip streaming
 
 ### How to use
 ```
