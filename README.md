@@ -4,13 +4,19 @@ A pure Python cross-platform program to send and receive files over local area n
 ### How to use
 ```
 python send.py <files...>
+  sends without PIN
 python send.py <-p|--pin> <files...>
+  sends with newly generated PIN
 python send.py <-up|--userpin> <user PIN> <files...>
+  sends with user specified PIN
 ```
 ```
 python recv.py
-python recv.py <n|new|g|gen>
+  receives without PIN
 python recv.py <user PIN>
+  receives with user specified PIN
+python recv.py <n|new|g|gen>
+  receives with newly generated PIN
 ```
 
 ### How to use with usecases
