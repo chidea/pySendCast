@@ -136,4 +136,4 @@ $ _
 ### Security note
 The receiver takes any gzip tar stream from port number 18902.
 Becuase this stream is not encrypted, it can be captured with network tools or can be easily targeted for hacking.
-**Any response from security issues are not taken by developer.**
+**Any responses from security issues are not taken by developer.**
