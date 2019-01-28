@@ -3,6 +3,16 @@ from bcast import BroadCastServSocket,BroadCastCliSocket, BCAST_MAGIC
 import socket
 import timeit
 
+def openurl(url):
+  import webbrowser
+  if webbrowser.get():
+    webbrowser.open(url)
+  else:
+    from shutil import which
+    if which('termux-open-url'):
+      from os import system
+      system('termux-open-url '+url)
+
 if __name__ == '__main__':
   from sys import argv
   if len(argv)>1 and argv[1]:
@@ -23,9 +33,13 @@ if __name__ == '__main__':
           sa.announce()
         try:
           c, a = s.accept()
+          from send import isurl
           with tarfile.open(fileobj=c.makefile('rb', buffering=0), mode='r|gz') as t:
             timeit.gc.disable()
             for ti in t:
+              if isurl(ti.name):
+                openurl(ti.name)
+                continue
               print('extracting %s (%d bytes)'%(ti.name,ti.size))
               t0=timeit.default_timer()
               t.extract(ti)

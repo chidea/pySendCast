@@ -9,6 +9,9 @@ def mkpin(length=4):
   from string import digits
   return ''.join(choices(digits, k=length))
 
+def isurl(s):
+  return s.startswith(('http://','https://'))
+
 if __name__ == '__main__':
   from sys import argv
   srv_addr = None
@@ -29,8 +32,11 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
       s.close()
   with socket.create_connection((srv_addr[0], 18902)) as s:
-      with tarfile.open(fileobj=s.makefile('wb', buffering=0), mode='w|gz') as t:
-        for a in argv[1:]:
+    with tarfile.open(fileobj=s.makefile('wb', buffering=0), mode='w|gz') as t:
+      for a in argv[1:]:
+        if isurl(a):
+          t.addfile(tarfile.TarInfo(a))
+        else:
           for f in glob.iglob(a):
             print('sending %s' %f)
             t.add(f, arcname=basename(f))
