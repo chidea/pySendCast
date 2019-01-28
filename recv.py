@@ -5,9 +5,10 @@ import timeit
 
 def openurl(url):
   import webbrowser
-  if webbrowser.get():
-    webbrowser.open(url)
-  else:
+  try:
+    if webbrowser.get():
+      webbrowser.open(url)
+  except webbrowser.Error:
     from shutil import which
     if which('termux-open-url'):
       from os import system
