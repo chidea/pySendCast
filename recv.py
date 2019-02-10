@@ -34,12 +34,16 @@ if __name__ == '__main__':
           sa.announce()
         try:
           c, a = s.accept()
+          print(a[0]) # ip address
           from send import isurl
           with tarfile.open(fileobj=c.makefile('rb', buffering=0), mode='r|gz') as t:
             timeit.gc.disable()
             for ti in t:
-              if isurl(ti.name):
-                openurl(ti.name)
+              if ti.size == 0:
+                if isurl(ti.name):
+                  openurl(ti.name)
+                else: # plain message
+                  print(ti.name)
                 continue
               print('extracting %s (%d bytes)'%(ti.name,ti.size))
               t0=timeit.default_timer()
