@@ -29,7 +29,8 @@ def main(argv):
     try:
       while srv_addr is None:
         srv_addr = s.discovery()
-      print('sending to :', (srv_addr[0], 18902))
+      print(srv_addr[0])
+      #print('sending to :', (srv_addr[0], 18902))
     except KeyboardInterrupt:
       s.close()
   with socket.create_connection((srv_addr[0], 18902)) as s:
