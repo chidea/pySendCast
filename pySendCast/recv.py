@@ -17,7 +17,7 @@ def openurl(url):
 def main(argv):
   if len(argv)>1 and argv[1]:
     if argv[1] in ('n', 'new', 'g', 'gen'):
-      from send import mkpin
+      from .send import mkpin
       pin = mkpin()
       print('generated PIN :', pin)
     else: pin = argv[1]
@@ -34,7 +34,7 @@ def main(argv):
         try:
           c, a = s.accept()
           print(a[0]) # ip address
-          from send import isurl
+          from .send import isurl
           with tarfile.open(fileobj=c.makefile('rb', buffering=0), mode='r|gz') as t:
             timeit.gc.disable()
             for ti in t:
