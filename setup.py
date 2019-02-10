@@ -12,7 +12,7 @@ if type(long_description) is bytes:
 
 setup(
     name='pySendCast',
-    version='0.0.2',
+    version='0.0.3',
     author='Ch.Idea',
     author_email='sbw228@gmail.com',
     description='A pure Python cross-platform program to send and receive data over local area network(LAN) with on-the-fly gzip streaming and broadcasting',

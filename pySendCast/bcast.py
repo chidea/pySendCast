@@ -29,13 +29,17 @@ class BroadCastSocket(socket):
 class BroadCastServSocket(BroadCastSocket):
   def __init__(self, port=None, magic=None):
     super().__init__(port, magic)
-    from socket import AF_INET, SOL_SOCKET, SO_BROADCAST, getaddrinfo, gethostname
+    from socket import AF_INET, SOL_SOCKET, SO_BROADCAST
     super().bind(('', 0))
     super().setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-    addrs = getaddrinfo(gethostname(), 0, family=AF_INET)
-    ip = addrs[-1][-1][0]
     from sys import platform
-    self.bcast_addr = (ip[:ip.rindex('.')+1]+'255') if platform == 'win32' else '<broadcast>'
+    if platform == 'win32':
+      from socket import inet_aton, getaddrinfo, gethostname
+      addrs = getaddrinfo(gethostname(), 0, family=AF_INET)
+      ip = max(addrs, key=lambda v:int.from_bytes(inet_aton(v[-1][0]), 'big'))[-1][0]
+      self.bcast_addr = ip[:ip.rindex('.')+1]+'255'
+    else:
+      self.bcast_addr = '<broadcast>'
 
   def send(self, data):
     #info('server sending : %s', data)
@@ -67,8 +71,7 @@ class BroadCastCliSocket(BroadCastSocket):
     data, addr = super().recvfrom(len(self.magic)+2)
     #print('discovered message :', data)
     #print('discovered from :', addr)
-    if data[:len(self.magic)] != self.magic : return None
-    return addr
+    return None if data[:len(self.magic)] != self.magic else addr
     #if not addr in self.serv_addr:
     #  self.serv_addr.append(addr)
     #  print('added to server address :', addr)
