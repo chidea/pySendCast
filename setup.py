@@ -11,14 +11,14 @@ if type(long_description) is bytes:
   long_description = long_description.decode()
 
 setup(
-    name='pySendBcast',
+    name='pySendCast',
     version='0.0.1',
     author='Ch.Idea',
     author_email='sbw228@gmail.com',
     description='A pure Python cross-platform program to send and receive data over local area network(LAN) with on-the-fly gzip streaming and broadcasting',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/chidea/pySendBcast',
+    url='https://github.com/chidea/pySendCast',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',

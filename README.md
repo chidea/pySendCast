@@ -1,5 +1,10 @@
-# pySendBcast
-A pure Python cross-platform program to send and receive files over local area network(LAN) with on-the-fly gzip streaming and broadcasting
+# pySendCast
+A pure Python cross-platform program to send and receive data over local area network(LAN) with on-the-fly gzip streaming and broadcasting
+
+### How to install
+```
+pip install pySendCast
+```
 
 ### How to use
 ```
