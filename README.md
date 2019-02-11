@@ -8,11 +8,11 @@ pip install pySendCast
 
 ### How to use
 ```
-python -m pySendCast send [file or messages...]
+sendcast send [file or messages...]
   sends without PIN.
-python -m pySendCast send <-p|--pin> [file or messages...]
+sendcast send <-p|--pin> [file or messages...]
   sends with newly generated PIN
-python -m pySendCast send <-up|--userpin> <user PIN> [file or messages...]
+sendcast send <-up|--userpin> <user PIN> [file or messages...]
   sends with user specified PIN
 ```
 file or message can be any of
@@ -22,11 +22,11 @@ file or message can be any of
 - message : simple text messages
 
 ```
-python -m pySendCast recv
+sendcast recv
   receives without PIN
-python -m pySendCast recv <user PIN>
+sendcast recv <user PIN>
   receives with user specified PIN
-python -m pySendCast recv <n|new|g|gen>
+sendcast recv <n|new|g|gen>
   receives with newly generated PIN
 ```
 
@@ -34,15 +34,15 @@ python -m pySendCast recv <n|new|g|gen>
 1. General usecase : send two files without PIN. The First non-PIN receiver on network takes the file
 - Sender
 ```shell
-$ python -m pySendCast send a.txt b.txt
+$ sendcast send a.txt b.txt
 ```
 - Receiver
 ```shell
-$ python -m pySendCast recv
+$ sendcast recv
 ```
 - Sender
 ```shell
-$ python -m pySendCast send a.txt b.txt
+$ sendcast send a.txt b.txt
 192.168.0.11
 sending a.txt
 sending b.txt
@@ -50,7 +50,7 @@ $ _
 ```
 - Receiver
 ```shell
-$ python -m pySendCast recv
+$ sendcast recv
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
 extracting b.txt (27 bytes)
@@ -62,16 +62,16 @@ $ _
 2. generated PIN usecase : send with newly generated PIN. receiver must know PIN to receive the file (be aware that its stream itself is **not securely encrypted**.)
 - Sender
 ```shell
-$ python -m pySendCast send -p a.txt b.txt
+$ sendcast send -p a.txt b.txt
 generated PIN : 3061
 ```
 - Receiver
 ```shell
-$ python -m pySendCast recv 3061
+$ sendcast recv 3061
 ```
 - Sender
 ```shell
-$ python -m pySendCast send -p a.txt b.txt
+$ sendcast send -p a.txt b.txt
 generated PIN : 3061
 192.168.0.11
 sending a.txt
@@ -80,7 +80,7 @@ $ _
 ```
 - Receiver
 ```shell
-$ python -m pySendCast recv 3061
+$ sendcast recv 3061
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
 extracting b.txt (27 bytes)
@@ -92,16 +92,16 @@ $ _
 3. user PIN usecase : send with user PIN. receiver must know PIN to receive the file (be aware that its stream itself is **not securely encrypted**.)
 - Sender
 ```shell
-$ python -m pySendCast send -up 9999 a.txt b.txt
+$ sendcast send -up 9999 a.txt b.txt
 user PIN : 9999
 ```
 - Receiver
 ```shell
-$ python -m pySendCast recv 9999
+$ sendcast recv 9999
 ```
 - Sender
 ```shell
-$ python -m pySendCast send -up 9999 a.txt b.txt
+$ sendcast send -up 9999 a.txt b.txt
 user PIN : 9999
 192.168.0.11
 sending a.txt
@@ -110,7 +110,7 @@ $ _
 ```
 - Receiver
 ```shell
-$ python -m pySendCast recv 9999
+$ sendcast recv 9999
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
 extracting b.txt (27 bytes)
@@ -122,12 +122,12 @@ $ _
 4. receiver generated PIN usecase : send with receiver created user PIN. sender must know PIN to send the file (be aware that its stream itself is **not securely encrypted**.)
 - Receiver
 ```shell
-$ python -m pySendCast recv n
+$ sendcast recv n
 generated PIN : 2342
 ```
 - Sender
 ```shell
-$ python -m pySendCast send -up 2342 a.txt b.txt
+$ sendcast send -up 2342 a.txt b.txt
 user PIN : 2342
 192.168.0.11
 sending a.txt
@@ -136,7 +136,7 @@ $ _
 ```
 - Receiver
 ```shell
-$ python -m pySendCast recv n
+$ sendcast recv n
 generated PIN : 2342
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)

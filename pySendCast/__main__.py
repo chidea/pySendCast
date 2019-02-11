@@ -1,4 +1,6 @@
 def main(argv=None):
+  if argv is None:
+    from sys import argv
   def usage():
     print('usage : <send/recv> [arguments]')
     exit(1)
