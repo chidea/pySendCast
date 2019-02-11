@@ -130,7 +130,6 @@ user PIN : 2342
 192.168.0.11
 sending a.txt
 sending b.txt
-$ _
 ```
 
 ### special usecase
