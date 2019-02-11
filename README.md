@@ -31,44 +31,50 @@ sendcast recv <n|new|g|gen>
 ```
 
 ### How to use with usecases
-1. General usecase : send two files without PIN. The First non-PIN receiver on network takes the file
+1. checkup IP
+- Sender : 192.168.0.10
+```shell
+$ sendcast send
+192.168.0.11
+```
+- Receiver : 192.168.0.11
+```shell
+$ sendcast recv
+192.168.0.10
+```
+
+2. Send message
 - Sender
 ```shell
-$ sendcast send a.txt b.txt
+$ sendcast hello
+192.168.0.11
 ```
 - Receiver
 ```shell
 $ sendcast recv
+192.168.0.10
+hello
 ```
+
+3. General usecase : send two files without PIN. The First non-PIN receiver on network takes the file
 - Sender
 ```shell
 $ sendcast send a.txt b.txt
 192.168.0.11
 sending a.txt
 sending b.txt
-$ _
 ```
 - Receiver
 ```shell
 $ sendcast recv
+192.168.0.10
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
 extracting b.txt (27 bytes)
 extracting b.txt done (27 bytes, 0.0000405 seconds, 0.666000 MB/s)
-$ _
 ```
-> In this case, receiver **can** be running before the sender sends
 
-2. generated PIN usecase : send with newly generated PIN. receiver must know PIN to receive the file (be aware that its stream itself is **not securely encrypted**.)
-- Sender
-```shell
-$ sendcast send -p a.txt b.txt
-generated PIN : 3061
-```
-- Receiver
-```shell
-$ sendcast recv 3061
-```
+4. generated PIN usecase : send with newly generated PIN. receiver must know PIN to receive the file (be aware that its stream itself is **not securely encrypted**.)
 - Sender
 ```shell
 $ sendcast send -p a.txt b.txt
@@ -76,29 +82,18 @@ generated PIN : 3061
 192.168.0.11
 sending a.txt
 sending b.txt
-$ _
 ```
 - Receiver
 ```shell
 $ sendcast recv 3061
+192.168.0.10
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
 extracting b.txt (27 bytes)
 extracting b.txt done (27 bytes, 0.0000405 seconds, 0.666000 MB/s)
-$ _
 ```
-> In this case, receiver **cannot** be running before the sender sends
 
-3. user PIN usecase : send with user PIN. receiver must know PIN to receive the file (be aware that its stream itself is **not securely encrypted**.)
-- Sender
-```shell
-$ sendcast send -up 9999 a.txt b.txt
-user PIN : 9999
-```
-- Receiver
-```shell
-$ sendcast recv 9999
-```
+5. user PIN usecase : send with user PIN. receiver must know PIN to receive the file (be aware that its stream itself is **not securely encrypted**.)
 - Sender
 ```shell
 $ sendcast send -up 9999 a.txt b.txt
@@ -106,24 +101,26 @@ user PIN : 9999
 192.168.0.11
 sending a.txt
 sending b.txt
-$ _
 ```
 - Receiver
 ```shell
 $ sendcast recv 9999
+192.168.0.10
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
 extracting b.txt (27 bytes)
 extracting b.txt done (27 bytes, 0.0000405 seconds, 0.666000 MB/s)
-$ _
 ```
-> In this case, receiver **can** be running before the sender sends
 
-4. receiver generated PIN usecase : send with receiver created user PIN. sender must know PIN to send the file (be aware that its stream itself is **not securely encrypted**.)
+6. receiver generated PIN usecase : send with receiver created user PIN. sender must know PIN to send the file (be aware that its stream itself is **not securely encrypted**.)
 - Receiver
 ```shell
 $ sendcast recv n
 generated PIN : 2342
+extracting a.txt (23 bytes)
+extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
+extracting b.txt (27 bytes)
+extracting b.txt done (27 bytes, 0.0000405 seconds, 0.666000 MB/s)
 ```
 - Sender
 ```shell
@@ -134,17 +131,6 @@ sending a.txt
 sending b.txt
 $ _
 ```
-- Receiver
-```shell
-$ sendcast recv n
-generated PIN : 2342
-extracting a.txt (23 bytes)
-extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
-extracting b.txt (27 bytes)
-extracting b.txt done (27 bytes, 0.0000405 seconds, 0.666000 MB/s)
-$ _
-```
-> In this case, receiver **can** be running before the sender sends
 
 ### special usecase
 - send/recv from Android
