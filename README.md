@@ -117,6 +117,7 @@ extracting b.txt done (27 bytes, 0.0000405 seconds, 0.666000 MB/s)
 ```shell
 $ sendcast recv n
 generated PIN : 2342
+192.168.0.10
 extracting a.txt (23 bytes)
 extracting a.txt done (23 bytes, 0.0000413 seconds, 0.557163 MB/s)
 extracting b.txt (27 bytes)
