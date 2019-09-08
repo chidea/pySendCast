@@ -32,19 +32,24 @@ class BroadCastServSocket(BroadCastSocket):
     from socket import AF_INET, SOL_SOCKET, SO_BROADCAST
     super().bind(('', 0))
     super().setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+    super().settimeout(0)
     from sys import platform
     if platform == 'win32':
       from socket import inet_aton, getaddrinfo, gethostname
       addrs = getaddrinfo(gethostname(), 0, family=AF_INET)
-      ip = max(addrs, key=lambda v:int.from_bytes(inet_aton(v[-1][0]), 'big'))[-1][0]
-      self.bcast_addr = ip[:ip.rindex('.')+1]+'255'
+      #ip = max(addrs, key=lambda v:int.from_bytes(inet_aton(v[-1][0]), 'big'))[-1][0]
+      #self.bcast_addr = ip[:ip.rindex('.')+1]+'255'
+      self.bcast_addrs = [v[:v.rindex('.')+1]+'255' for v in list(map(lambda v:v[-1][0], addrs))]
     else:
-      self.bcast_addr = '<broadcast>'
+      self.bcast_addrs = ['<broadcast>']
 
   def send(self, data):
     #info('server sending : %s', data)
     try:
-      super().sendto(data, (self.bcast_addr, self.bcast_port))
+      #super().sendto(data, (self.bcast_addr, self.bcast_port))
+      for addr in self.bcast_addrs:
+        #print('server sending : %s to %s:%s', data, addr, self.bcast_port)
+        super().sendto(data, (addr, self.bcast_port))
     except Exception as e:
       error('socket send error with : %s', e)
 
