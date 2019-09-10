@@ -46,7 +46,7 @@ $ sendcast recv
 2. Send message
 - Sender
 ```shell
-$ sendcast hello
+$ sendcast send hello
 192.168.0.11
 ```
 - Receiver
