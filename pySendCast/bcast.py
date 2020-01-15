@@ -1,4 +1,4 @@
-from time import sleep, clock
+from time import sleep
 from logging import info, debug, warn, critical, error
 from socket import socket
 import struct
