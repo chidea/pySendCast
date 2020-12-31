@@ -23,6 +23,9 @@ def main(argv):
       pin=mkpin()
       print('generated PIN :', pin)
       argv = [argv[0]] + argv[2:]
+    elif argv[1] in ('-r', '--recv', '--receiver'):
+      pin=''
+      srv_addr = (argv[2],)
     else: pin=''
   else: pin=''
   with BroadCastCliSocket(magic='sendfile'+pin) as s:
@@ -30,9 +33,9 @@ def main(argv):
       while srv_addr is None:
         srv_addr = s.discovery()
       print(srv_addr[0])
-      #print('sending to :', (srv_addr[0], 18902))
     except KeyboardInterrupt:
       s.close()
+  print('sending to :', (srv_addr[0], 18902))
   with socket.create_connection((srv_addr[0], 18902)) as s:
     with tarfile.open(fileobj=s.makefile('wb', buffering=0), mode='w|gz') as t:
       for a in argv[1:]:
