@@ -35,20 +35,23 @@ def main(argv):
           pass
     print('sending to :', (srv_addr[0], 18902))
     while True:
-      with socket.create_connection((srv_addr[0], 18902), timeout=1) as s:
-        with tarfile.open(fileobj=s.makefile('wb', buffering=0), mode='w|gz') as t:
-          for a in argv[1:]:
-            isMessage = isurl(a)
-            if not isMessage:
-              files = list(glob.iglob(a))
-              isMessage |= 0 == len(files)
-            if isMessage:
-              t.addfile(tarfile.TarInfo(a))
-            else:
-              for f in files:
-                print('sending %s' %f)
-                t.add(f, arcname=basename(f))
-          return 0
+      try:
+        with socket.create_connection((srv_addr[0], 18902), timeout=1) as s:
+          with tarfile.open(fileobj=s.makefile('wb', buffering=0), mode='w|gz') as t:
+            for a in argv[1:]:
+              isMessage = isurl(a)
+              if not isMessage:
+                files = list(glob.iglob(a))
+                isMessage |= 0 == len(files)
+              if isMessage:
+                t.addfile(tarfile.TarInfo(a))
+              else:
+                for f in files:
+                  print('sending %s' %f)
+                  t.add(f, arcname=basename(f))
+            return 0
+      except socket.timeout:
+        pass
   except KeyboardInterrupt:
     print('user canceled sending')
     return 1
