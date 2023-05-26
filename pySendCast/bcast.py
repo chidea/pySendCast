@@ -39,17 +39,19 @@ class BroadCastServSocket(BroadCastSocket):
       addrs = getaddrinfo(gethostname(), 0, family=AF_INET)
       #ip = max(addrs, key=lambda v:int.from_bytes(inet_aton(v[-1][0]), 'big'))[-1][0]
       #self.bcast_addr = ip[:ip.rindex('.')+1]+'255'
-      self.bcast_addrs = [v[:v.rindex('.')+1]+'255' for v in list(map(lambda v:v[-1][0], addrs))]
+      #self.bcast_addrs = [v[:v.rindex('.')+1]+'255' for v in list(map(lambda v:v[-1][0], addrs))]
+      self.bcast_addr = '255.255.255.255'
     else:
-      self.bcast_addrs = ['<broadcast>']
+      self.bcast_addr = '<broadcast>'
 
   def send(self, data):
     #info('server sending : %s', data)
     try:
       #super().sendto(data, (self.bcast_addr, self.bcast_port))
-      for addr in self.bcast_addrs:
-        #print('server sending : %s to %s:%s', data, addr, self.bcast_port)
-        super().sendto(data, (addr, self.bcast_port))
+      #for addr in self.bcast_addrs:
+      #  #print('server sending : %s to %s:%s', data, addr, self.bcast_port)
+      #  super().sendto(data, (addr, self.bcast_port))
+      super().sendto(data, (self.bcast_addr, self.bcast_port))
     except Exception as e:
       error('socket send error with : %s', e)
 

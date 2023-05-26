@@ -14,6 +14,8 @@ sendcast send <-p|--pin> [file or messages...]
   sends with newly generated PIN
 sendcast send <-up|--userpin> <user PIN> [file or messages...]
   sends with user specified PIN
+sendcast send <-r|--recv|--receiver> <recv address> [file or messages...]
+  sends to IP or address directly
 ```
 file or message can be any of
 - nothing : check up each other's ip address
