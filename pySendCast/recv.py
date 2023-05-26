@@ -26,10 +26,11 @@ def main(argv):
     s.bind(('', 18902))
     s.setblocking(True)
     s.settimeout(1)
-    s.listen(1)
+    s.listen()
     try:
       while True:
         with BroadCastServSocket(magic='sendfile'+pin) as sa:
+          print('announcing')
           sa.announce()
         try:
           c, a = s.accept()

@@ -33,18 +33,17 @@ class BroadCastServSocket(BroadCastSocket):
     super().bind(('', 0))
     super().setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
     from sys import platform
-    from socket import gethostbyname_ex, gethostname
-    self.bcast_addrs = [ip[:ip.rindex('.')+1]+'255' for ip in gethostbyname_ex(gethostname())[2] if not ip.startswith("127.")]
-    #print('broadcasting to', self.bcast_addrs)
-    #if platform == 'win32':
+    if platform == 'win32':
+      from socket import gethostbyname_ex, gethostname
+      self.bcast_addrs = [ip[:ip.rindex('.')+1]+'255' for ip in gethostbyname_ex(gethostname())[2] if not ip.startswith('127.')]
     #  from socket import inet_aton, getaddrinfo, gethostname
     #  addrs = getaddrinfo(gethostname(), 0, family=AF_INET)
     #  #ip = max(addrs, key=lambda v:int.from_bytes(inet_aton(v[-1][0]), 'big'))[-1][0]
-    #  #self.bcast_addr = ip[:ip.rindex('.')+1]+'255'
     #  self.bcast_addrs = [v[:v.rindex('.')+1]+'255' for v in list(map(lambda v:v[-1][0], addrs))]
     #  #self.bcast_addr = '255.255.255.255'
-    #else:
-    #  #self.bcast_addr = '<broadcast>'
+    else:
+      self.bcast_addrs = ['<broadcast>']
+    #print('broadcasting to', self.bcast_addrs)
 
   def send(self, data):
     #info('server sending : %s', data)
