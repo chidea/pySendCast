@@ -82,11 +82,11 @@ class BroadCastCliSocket(BroadCastSocket):
   def discovery(self):
     try:
       data, addr = super().recvfrom(len(self.magic)+2)
+      #print('discovered message :', data)
+      #print('discovered from :', addr)
+      return None if data[:len(self.magic)] != self.magic else addr
     except timeout:
       return None
-    #print('discovered message :', data)
-    #print('discovered from :', addr)
-    return None if data[:len(self.magic)] != self.magic else addr
     #if not addr in self.serv_addr:
     #  self.serv_addr.append(addr)
     #  print('added to server address :', addr)
