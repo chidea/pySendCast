@@ -13,7 +13,6 @@ class BroadCastSocket(socket):
     super().__init__(AF_INET, SOCK_DGRAM)#, IPPROTO_UDP
     super().setblocking(True)
     super().settimeout(1)
-    #super().settimeout(0)
     self.bcast_port = port or BCAST_PORT
     self.magic = (BCAST_MAGIC + (('_'+magic) if magic else '')).encode()
   
@@ -33,10 +32,10 @@ class BroadCastServSocket(BroadCastSocket):
     from socket import AF_INET, SOL_SOCKET, SO_BROADCAST
     super().bind(('', 0))
     super().setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-    super().settimeout(1)
     from sys import platform
     from socket import gethostbyname_ex, gethostname
-    self.bcast_addrs = [ip[:ip.rindex('.')+1]+'255' for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")]
+    self.bcast_addrs = [ip[:ip.rindex('.')+1]+'255' for ip in gethostbyname_ex(gethostname())[2] if not ip.startswith("127.")]
+    #print('broadcasting to', self.bcast_addrs)
     #if platform == 'win32':
     #  from socket import inet_aton, getaddrinfo, gethostname
     #  addrs = getaddrinfo(gethostname(), 0, family=AF_INET)

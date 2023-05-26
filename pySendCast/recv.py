@@ -55,6 +55,8 @@ def main(argv):
           continue
     except KeyboardInterrupt:
       s.close()
+      print('user canceled receiving')
+      return 1
 
 if __name__ == '__main__':
   from sys import argv
