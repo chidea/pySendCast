@@ -1,6 +1,9 @@
 # pySendCast
 A pure Python cross-platform program to send and receive data over local area network(LAN) with on-the-fly gzip streaming and broadcasting
 
+### Important note
+On firewall environments like Windows, set TCP port 18902 allowed. This port is used to transfer gzip stream. On Windows, it should be also checked that the network you are sending files over is set to be a private network.
+
 ### How to install
 ```
 pip install pySendCast
