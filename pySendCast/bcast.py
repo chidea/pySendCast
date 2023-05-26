@@ -1,6 +1,6 @@
 from time import sleep
 from logging import info, debug, warn, critical, error
-from socket import socket
+from socket import socket, timeout
 import struct
 import sys
 
@@ -12,7 +12,7 @@ class BroadCastSocket(socket):
     from socket import AF_INET, SOCK_DGRAM
     super().__init__(AF_INET, SOCK_DGRAM)#, IPPROTO_UDP
     super().setblocking(True)
-    #super().setblocking(False)
+    super().settimeout(1)
     #super().settimeout(0)
     self.bcast_port = port or BCAST_PORT
     self.magic = (BCAST_MAGIC + (('_'+magic) if magic else '')).encode()
@@ -26,13 +26,14 @@ class BroadCastSocket(socket):
   def wait(self, num=0):
     pass
 
+# Receiving side is Server
 class BroadCastServSocket(BroadCastSocket):
   def __init__(self, port=None, magic=None):
     super().__init__(port, magic)
     from socket import AF_INET, SOL_SOCKET, SO_BROADCAST
     super().bind(('', 0))
     super().setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-    super().settimeout(0)
+    super().settimeout(1)
     from sys import platform
     if platform == 'win32':
       from socket import inet_aton, getaddrinfo, gethostname
@@ -61,11 +62,15 @@ class BroadCastServSocket(BroadCastSocket):
   def announce_loop(self):
     try:
       while True:
-        self.announce()
+        try:
+          self.announce()
+        except timeout:
+          pass
         sleep(1)
     except KeyboardInterrupt:
       print('finishing announce loop')
 
+# Sending side is Client
 class BroadCastCliSocket(BroadCastSocket):
   def __init__(self, port=None, magic=None):
     super().__init__(port, magic)
@@ -75,7 +80,10 @@ class BroadCastCliSocket(BroadCastSocket):
     super().bind(('', self.bcast_port))
 
   def discovery(self):
-    data, addr = super().recvfrom(len(self.magic)+2)
+    try:
+      data, addr = super().recvfrom(len(self.magic)+2)
+    except timeout:
+      return None
     #print('discovered message :', data)
     #print('discovered from :', addr)
     return None if data[:len(self.magic)] != self.magic else addr
@@ -119,8 +127,10 @@ def test(is_serv):
     if is_serv:
       sock.announce_loop()
     else:
-      print('discovered :', sock.discovery())
+      while not sock.discovery():
+        pass
   except KeyboardInterrupt:
+    print('test is canceled')
     sock.close()
 
 if __name__ == '__main__':

@@ -50,7 +50,7 @@ def main(argv):
               t0=timeit.default_timer()-t0
               print('extracting %s done (%d bytes, %f seconds, %f MB/s)'%(ti.name,ti.size, t0, ti.size/t0/10**6))
             timeit.gc.enable()
-            break
+            break # complete -> break loop
         except socket.timeout:
           continue
     except KeyboardInterrupt:

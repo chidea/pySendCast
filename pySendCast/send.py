@@ -28,27 +28,30 @@ def main(argv):
       srv_addr = (argv[2],)
     else: pin=''
   else: pin=''
-  with BroadCastCliSocket(magic='sendfile'+pin) as s:
-    try:
+
+  try:
+    with BroadCastCliSocket(magic='sendfile'+pin) as s:
       while srv_addr is None:
-        srv_addr = s.discovery()
-      print(srv_addr[0])
-    except KeyboardInterrupt:
-      s.close()
-  print('sending to :', (srv_addr[0], 18902))
-  with socket.create_connection((srv_addr[0], 18902)) as s:
-    with tarfile.open(fileobj=s.makefile('wb', buffering=0), mode='w|gz') as t:
-      for a in argv[1:]:
-        isMessage = isurl(a)
-        if not isMessage:
-          files = list(glob.iglob(a))
-          isMessage |= 0 == len(files)
-        if isMessage:
-          t.addfile(tarfile.TarInfo(a))
-        else:
-          for f in files:
-            print('sending %s' %f)
-            t.add(f, arcname=basename(f))
+        try:
+          srv_addr = s.discovery()
+        except socket.timeout:
+          pass
+    print('sending to :', (srv_addr[0], 18902))
+    with socket.create_connection((srv_addr[0], 18902)) as s:
+      with tarfile.open(fileobj=s.makefile('wb', buffering=0), mode='w|gz') as t:
+        for a in argv[1:]:
+          isMessage = isurl(a)
+          if not isMessage:
+            files = list(glob.iglob(a))
+            isMessage |= 0 == len(files)
+          if isMessage:
+            t.addfile(tarfile.TarInfo(a))
+          else:
+            for f in files:
+              print('sending %s' %f)
+              t.add(f, arcname=basename(f))
+  except KeyboardInterrupt:
+    print('user canceled sending')
   
 if __name__ == '__main__':
   from sys import argv
