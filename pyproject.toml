@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pySendCast"
+dynamic = ["version"]
+description = "A pure Python cross-platform program to send and receive data over local area network(LAN) with on-the-fly gzip streaming and broadcasting"
+readme = "README.md"
+license = ""
+authors = [
+    { name = "Ch.Idea", email = "sbw228@gmail.com" },
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Communications :: File Sharing",
+    "Topic :: System :: Networking",
+]
+
+[project.scripts]
+sendcast = "src.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/chidea/pySendCast"
+
+[tool.hatch.version]
+path = "src/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+]
