@@ -47,8 +47,9 @@ def main(argv):
     else: pin = argv[1]
   else: pin = ''
     
-  sockets = []
-  threads = []
+  # receiving socket
+  sock = None
+  thread = None
   with socket.socket() as s:
     s.bind(('', 18902))
     s.setblocking(True)
@@ -65,34 +66,18 @@ def main(argv):
           fo = c.makefile('rb', buffering=0)
           tar = tarfile.open(fileobj=fo, mode='r|gz')
           
-          t = Thread(target=extract_all, args=[tar])
-          t.run()
-          sockets.append(sa)
-          threads.append(t)
-          break
-          
-          #from .send import isurl
-          #with tarfile.open(fileobj=fo, mode='r|gz') as tar:
-          #  for f in tar:
-          #    if f.size == 0:
-          #      if isurl(f.name):
-          #        openurl(f.name)
-          #      else: # plain message
-          #        print(f.name)
-          #      continue
-              #t = Thread(target=extract, args=[f, tar])
-              #t.run()
-              #threads.append(t)
-            #s.close()
-            #break # complete -> break loop 
+          thread = Thread(target=extract_all, args=[tar])
+          thread.start()
+          sock = sa
+          break 
         except socket.timeout:
           continue
     except KeyboardInterrupt:
       s.close()
       print('user canceled receiving')
       return 1
-  for t in threads:
-    t.join()
+  if thread.is_alive():
+    thread.join()
     
 
 if __name__ == '__main__':
